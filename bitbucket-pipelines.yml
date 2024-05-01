@@ -1,0 +1,29 @@
+  image: maven:3.6.0
+
+  pipelines:
+    default:
+      - parallel:
+        - step:
+            name: Dineazy UI Tests
+            services:
+              - selenium-chrome
+            artifacts:
+              - target/cucumber-reports/**
+              - target/logs/**
+            caches:
+              - maven
+            script:
+              - mvn clean
+              - mvn -B verify
+
+
+  definitions:
+    services:
+      selenium-chrome:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - "4444:4444"
+      selenium-firefox:
+        image: selenium/standalone-firefox:latest
+        ports:
+          - "4444:4444"
